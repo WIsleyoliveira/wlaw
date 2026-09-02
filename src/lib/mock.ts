@@ -130,3 +130,73 @@ export const kanban = [
   { coluna: "Revisão", tone: "neutral", cards: [3] },
   { coluna: "Concluída", tone: "ok", cards: [5] },
 ] as const;
+
+export const fluxo = [
+  { mes: "Abr", receita: 38200, despesa: 27400 },
+  { mes: "Mai", receita: 41500, despesa: 26900 },
+  { mes: "Jun", receita: 36800, despesa: 29100 },
+  { mes: "Jul", receita: 47300, despesa: 28200 },
+  { mes: "Ago", receita: 52100, despesa: 30400 },
+  { mes: "Set", receita: 44900, despesa: 28800 },
+] as const;
+
+export const aReceber = [
+  { doc: "COB.000142", cliente: "F. M. Rodrigues - ME", descricao: "Mensalidade set/2026", vencimento: "05/09/2026", valor: 4500, situacao: "Em aberto" },
+  { doc: "COB.000139", cliente: "Espólio de Ana Francisca", descricao: "Parcela 2/4 — inventário", vencimento: "30/08/2026", valor: 3000, situacao: "Vencido" },
+  { doc: "COB.000145", cliente: "Junto Telecom", descricao: "Êxito — acordo homologado", vencimento: "20/09/2026", valor: 18400, situacao: "Em aberto" },
+  { doc: "COB.000147", cliente: "Victor Comércio", descricao: "Honorários contratuais", vencimento: "28/09/2026", valor: 6200, situacao: "Em aberto" },
+] as const;
+
+export const aPagar = [
+  { doc: "PAG.000088", fornecedor: "Aluguel — Sala 1204", categoria: "Ocupação", vencimento: "05/09/2026", valor: 7800, situacao: "Em aberto" },
+  { doc: "PAG.000089", fornecedor: "Folha de pagamento", categoria: "Pessoal", vencimento: "05/09/2026", valor: 14200, situacao: "Em aberto" },
+  { doc: "PAG.000091", fornecedor: "Custas TJ-PA", categoria: "Custas e diligências", vencimento: "12/09/2026", valor: 1840, situacao: "Em aberto" },
+  { doc: "PAG.000084", fornecedor: "Wlaw — assinatura", categoria: "Tecnologia", vencimento: "01/09/2026", valor: 890, situacao: "Pago" },
+] as const;
+
+export const centrosCusto = [
+  { nome: "Pessoal", valor: 14200 },
+  { nome: "Ocupação", valor: 7800 },
+  { nome: "Custas e diligências", valor: 3960 },
+  { nome: "Tecnologia", valor: 1740 },
+  { nome: "Marketing", valor: 1100 },
+] as const;
+
+export const arquivos = [
+  { nome: "Decisão de saneamento.pdf", tipo: "Decisão", vinculo: "PRO.0000171", cliente: "F. M. Rodrigues - ME", tamanho: "312 KB", data: "18/08/2026", autor: "Captura automática" },
+  { nome: "Manifestação sobre contestação.docx", tipo: "Petição", vinculo: "PRO.0000171", cliente: "F. M. Rodrigues - ME", tamanho: "84 KB", data: "02/08/2026", autor: "Alanna Correa" },
+  { nome: "Contrato de honorários — Junto Telecom.pdf", tipo: "Contrato", vinculo: "CTR.000021", cliente: "Junto Telecom", tamanho: "220 KB", data: "14/03/2026", autor: "Wisley Oliveira" },
+  { nome: "Notas fiscais 04-09/2023.pdf", tipo: "Prova", vinculo: "PRO.0000171", cliente: "F. M. Rodrigues - ME", tamanho: "2,8 MB", data: "12/03/2024", autor: "Wisley Oliveira" },
+  { nome: "Procuração — Espólio.pdf", tipo: "Procuração", vinculo: "PRO.0000201", cliente: "Espólio de Ana Francisca", tamanho: "96 KB", data: "22/05/2026", autor: "Camila Ferreira" },
+  { nome: "Ata de audiência 03-09.pdf", tipo: "Decisão", vinculo: "PRO.0000230", cliente: "F. M. Rodrigues - ME", tamanho: "148 KB", data: "31/08/2026", autor: "Captura automática" },
+] as const;
+
+export const modelos = [
+  { nome: "Contrarrazões de apelação", area: "Cível", usos: 34 },
+  { nome: "Petição inicial — cobrança", area: "Cível", usos: 28 },
+  { nome: "Contrato de honorários — êxito", area: "Contratos", usos: 19 },
+  { nome: "Embargos de declaração", area: "Cível", usos: 12 },
+] as const;
+
+export const indicadores = {
+  carteira: { total: 291, ativos: 214, parados: 41, arquivados: 36 },
+  prazos: { cumpridos: 187, perdidos: 2, taxa: 98.9 },
+  produtividade: [
+    { nome: "Alanna Correa", tarefas: 52, horas: 96.5, faturavel: 78 },
+    { nome: "Wisley Oliveira", tarefas: 34, horas: 71.0, faturavel: 84 },
+    { nome: "Camila Ferreira", tarefas: 28, horas: 62.5, faturavel: 41 },
+  ],
+  porArea: [
+    { area: "Cível", qtd: 118 },
+    { area: "Empresarial", qtd: 74 },
+    { area: "Eleitoral", qtd: 52 },
+    { area: "Trabalhista", qtd: 31 },
+    { area: "Tributário", qtd: 16 },
+  ],
+  clientesTop: [
+    { nome: "F. M. Rodrigues - ME", processos: 42, receita: 54000 },
+    { nome: "Junto Telecom", processos: 28, receita: 41200 },
+    { nome: "Victor Comércio", processos: 19, receita: 22800 },
+    { nome: "Espólio de Ana Francisca", processos: 11, receita: 12000 },
+  ],
+};

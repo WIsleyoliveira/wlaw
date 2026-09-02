@@ -25,6 +25,7 @@ export const NAV: NavGroup[] = [
       { label: "Atendimentos", href: "/atendimentos", icon: "spark" },
       { label: "Honorários", href: "/honorarios", icon: "chart" },
       { label: "Timesheet", href: "/timesheet", icon: "gauge" },
+      { label: "Financeiro", href: "/financeiro", icon: "chart" },
     ],
   },
   {

@@ -1,22 +1,29 @@
+import Link from "next/link";
 import { Button, SearchInput, cx } from "@/components/ui";
 import { IconExport, IconFilter, IconPlus } from "@/components/icons";
 
 export function Toolbar({
   novo,
+  novoHref,
   placeholder,
   chips,
   filtros = 0,
 }: {
   novo: string;
+  novoHref?: string;
   placeholder: string;
   chips: string[];
   filtros?: number;
 }) {
+  const botao = (
+    <Button variant="primary">
+      <IconPlus className="h-4 w-4" /> {novo}
+    </Button>
+  );
+
   return (
     <div className="flex flex-wrap items-center gap-2 border-b border-ink-200 px-5 py-3">
-      <Button variant="primary">
-        <IconPlus className="h-4 w-4" /> {novo}
-      </Button>
+      {novoHref ? <Link href={novoHref}>{botao}</Link> : botao}
       <div className="min-w-[240px] flex-1">
         <SearchInput placeholder={placeholder} />
       </div>
