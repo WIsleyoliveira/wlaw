@@ -1,0 +1,52 @@
+# Infraestrutura local do Wlaw. Suba o banco com:  docker compose up -d db
+# O robô de captura (agendador) só sobe com:        docker compose --profile robo up -d
+name: wlaw
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: wlaw-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: wlaw
+      POSTGRES_USER: wlaw
+      POSTGRES_PASSWORD: ${WLAW_DB_SENHA:?defina WLAW_DB_SENHA no .env}
+      TZ: America/Belem
+      PGTZ: America/Belem
+    # Só na interface local: o banco não fica exposto na rede.
+    ports:
+      - "127.0.0.1:5434:5432"
+    volumes:
+      - wlaw-dados:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U wlaw -d wlaw"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  # Dispara o ciclo de captura no Wlaw a cada INTERVALO_SEGUNDOS.
+  # Em produção, troque por Vercel Cron ou qualquer agendador que faça o mesmo POST.
+  agendador:
+    image: curlimages/curl:latest
+    container_name: wlaw-agendador
+    restart: unless-stopped
+    profiles: ["robo"]
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      CRON_SECRET: ${CRON_SECRET:?defina CRON_SECRET no .env}
+      WLAW_URL: ${WLAW_URL:-http://host.docker.internal:3100}
+      INTERVALO_SEGUNDOS: ${INTERVALO_SEGUNDOS:-900}
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        while true; do
+          echo "$$(date -Iseconds) ciclo"
+          curl -fsS -m 280 -X POST -H "Authorization: Bearer $$CRON_SECRET" "$$WLAW_URL/api/robo/ciclo" || echo "falhou"
+          echo
+          sleep "$$INTERVALO_SEGUNDOS"
+        done
+
+volumes:
+  wlaw-dados:

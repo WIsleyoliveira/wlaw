@@ -24,8 +24,8 @@ export function CardHeader({
   hint?: string;
 }) {
   return (
-    <header className="flex items-start justify-between gap-4 px-5 pt-4 pb-3">
-      <div>
+    <header className="flex flex-wrap items-start justify-between gap-x-4 gap-y-2 px-5 pt-4 pb-3">
+      <div className="min-w-0">
         <h2 className="font-display text-[15px] font-semibold tracking-tight text-ink-950">{title}</h2>
         {hint && <p className="mt-0.5 text-xs text-ink-500">{hint}</p>}
         <div className="gold-rule mt-2 h-px w-10" />
@@ -86,47 +86,5 @@ export function Badge({ tone = "neutral", children }: { tone?: Tone; children: R
     >
       {children}
     </span>
-  );
-}
-
-/* ---------- Campos ---------- */
-
-export function SearchInput({ placeholder }: { placeholder: string }) {
-  return (
-    <div className="flex h-9 flex-1 items-center gap-2 rounded-lg border border-ink-200 bg-white px-3 focus-within:border-gold-400">
-      <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0 text-ink-400" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round">
-        <circle cx="11" cy="11" r="7" />
-        <path d="m20 20-4-4" />
-      </svg>
-      <input
-        placeholder={placeholder}
-        className="w-full bg-transparent text-sm text-ink-900 outline-none placeholder:text-ink-400"
-      />
-    </div>
-  );
-}
-
-/* ---------- Rótulo de campo em linha de tabela ---------- */
-
-export function Field({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <div className="min-w-0">
-      <div className="text-[11px] uppercase tracking-wide text-ink-400">{label}</div>
-      <div className="truncate text-[13px] text-ink-900">{children}</div>
-    </div>
-  );
-}
-
-/* ---------- Estado vazio ---------- */
-
-export function Empty({ title, action }: { title: string; action?: string }) {
-  return (
-    <div className="flex flex-col items-center gap-3 px-6 py-20 text-center">
-      <div className="grid h-14 w-14 place-items-center rounded-full border border-gold-200 bg-gold-50">
-        <span className="font-display text-lg text-gold-500">W</span>
-      </div>
-      <p className="text-sm text-ink-500">{title}</p>
-      {action && <Button size="sm">{action}</Button>}
-    </div>
   );
 }

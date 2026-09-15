@@ -1,85 +1,67 @@
+import { exigirPagina } from "@/lib/auth/sessao";
+import { pode, recursoDaRota } from "@/lib/permissoes";
 import { Topbar } from "@/components/topbar";
-import { Button, Card, SearchInput } from "@/components/ui";
-import { IconExport, IconReport } from "@/components/icons";
-import { catalogoRelatorios } from "@/lib/mock";
+import { Card } from "@/components/ui";
+import { CatalogoRelatorios, type GrupoRelatorios } from "./catalogo";
 
-const gerados = [
-  { nome: "Timesheet — agosto/2026", formato: "XLSX", data: "01/09/2026 08:12", tamanho: "182 KB" },
-  { nome: "Processos sem movimentação — 90 dias", formato: "PDF", data: "28/08/2026 17:40", tamanho: "96 KB" },
+const catalogoRelatorios: GrupoRelatorios[] = [
+  {
+    grupo: "Gestão",
+    itens: [
+      { nome: "Atendimentos por cliente", desc: "Volume de atendimentos registrados.", href: "/atendimentos" },
+      { nome: "Pessoas — completo", desc: "Cadastro consolidado de clientes e envolvidos.", href: "/pessoas" },
+    ],
+  },
+  {
+    grupo: "Atividades",
+    itens: [
+      { nome: "Timesheet", desc: "Horas lançadas por responsável, cliente e faturamento.", href: "/timesheet" },
+      { nome: "Tarefas", desc: "Prazos previstos, fatais e situação de conclusão.", href: "/atividades" },
+      { nome: "Audiências", desc: "Pauta por período, comarca e responsável.", href: "/atividades?situacao=Todos&q=Audi%C3%AAncia" },
+    ],
+  },
+  {
+    grupo: "Processos",
+    itens: [
+      { nome: "Processos — completo", desc: "Base inteira com partes, assunto e fase.", href: "/processos" },
+      { nome: "Andamentos em planilha", desc: "Movimentações capturadas prontas para análise.", href: "/andamentos" },
+      { nome: "Processos monitorados", desc: "Carteira sob monitoramento ativo.", href: "/monitoramento" },
+    ],
+  },
+  {
+    grupo: "Financeiro",
+    itens: [
+      { nome: "Financeiro — completo", desc: "Receitas, despesas e resultado por período.", href: "/financeiro" },
+      { nome: "Honorários por cliente", desc: "Contratado x faturado x recebido.", href: "/honorarios" },
+    ],
+  },
 ];
 
-export default function RelatoriosPage() {
+export default async function RelatoriosPage() {
+  const eu = await exigirPagina("relatorios");
+  // Cada relatório só aparece para quem pode abrir a tela de destino.
+  const grupos = catalogoRelatorios
+    .map((g) => ({ ...g, itens: g.itens.filter((it) => pode(eu.perfil, recursoDaRota(it.href.split("?")[0]))) }))
+    .filter((g) => g.itens.length > 0);
   return (
     <>
       <Topbar title="Relatórios" />
-      <main className="grid gap-4 p-6 xl:grid-cols-[1fr_360px]">
-        <div className="space-y-4">
+      <main className="grid gap-4 p-4 sm:p-6 xl:grid-cols-[1fr_360px] *:min-w-0">
+        <div className="min-w-0 space-y-4">
           <Card>
-            <div className="border-b border-ink-200 px-5 py-3">
-              <SearchInput placeholder="Buscar relatório por nome ou área" />
-            </div>
-
-            <div className="divide-y divide-ink-200">
-              {catalogoRelatorios.map((g) => (
-                <div key={g.grupo} className="px-5 py-4">
-                  <div className="mb-3 flex items-center gap-2">
-                    <h2 className="font-display text-[15px] font-semibold">{g.grupo}</h2>
-                    <span className="gold-rule h-px flex-1" />
-                    <span className="text-[11px] text-ink-400">{g.itens.length} relatórios</span>
-                  </div>
-                  <div className="grid gap-2 md:grid-cols-2">
-                    {g.itens.map((it) => (
-                      <button
-                        key={it.nome}
-                        className="group flex items-start gap-3 rounded-lg border border-ink-200 p-3 text-left transition-colors hover:border-gold-400 hover:bg-gold-50"
-                      >
-                        <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-ink-100 text-ink-700 group-hover:bg-white group-hover:text-gold-600">
-                          <IconReport className="h-[18px] w-[18px]" />
-                        </span>
-                        <span className="min-w-0">
-                          <span className="block text-[13px] font-medium text-ink-950">{it.nome}</span>
-                          <span className="block text-xs leading-snug text-ink-500">{it.desc}</span>
-                        </span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
+            <CatalogoRelatorios grupos={grupos} />
           </Card>
         </div>
 
         <div className="space-y-4">
           <Card>
-            <div className="flex items-center justify-between border-b border-ink-200 px-5 py-3">
-              <h2 className="font-display text-[15px] font-semibold">Gerados recentemente</h2>
-            </div>
-            <ul className="divide-y divide-ink-200">
-              {gerados.map((r) => (
-                <li key={r.nome} className="flex items-center gap-3 px-5 py-3.5 hover:bg-ink-50">
-                  <span className="grid h-9 w-9 place-items-center rounded-lg border border-gold-200 bg-gold-50 text-[10px] font-semibold text-gold-600">
-                    {r.formato}
-                  </span>
-                  <div className="min-w-0 flex-1">
-                    <p className="truncate text-[13px] font-medium">{r.nome}</p>
-                    <p className="text-xs text-ink-500">{r.data} · {r.tamanho}</p>
-                  </div>
-                  <Button size="sm" variant="ghost" aria-label="Baixar">
-                    <IconExport className="h-4 w-4" />
-                  </Button>
-                </li>
-              ))}
-            </ul>
-          </Card>
-
-          <Card>
             <div className="p-5">
-              <p className="text-[11px] uppercase tracking-[0.12em] text-gold-500">Agendamento</p>
+              <p className="text-[11px] uppercase tracking-[0.12em] text-gold-500">Como funciona</p>
               <p className="mt-2 text-[13px] leading-snug text-ink-700">
-                Programe qualquer relatório para chegar por e-mail toda segunda-feira, já filtrado
-                pela sua carteira.
+                Cada relatório abre a listagem correspondente, já com os filtros e a busca prontos
+                para você refinar. Exportação em XLSX/PDF e envio agendado por e-mail ainda não
+                estão disponíveis.
               </p>
-              <Button size="sm" className="mt-3 w-full">Agendar envio recorrente</Button>
             </div>
           </Card>
         </div>

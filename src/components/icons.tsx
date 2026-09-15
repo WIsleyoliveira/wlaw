@@ -1,11 +1,16 @@
 type P = { className?: string };
 const base = "h-[18px] w-[18px]";
-const s = (d: string) => (p: P) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"
-       strokeLinecap="round" strokeLinejoin="round" className={p.className ?? base} aria-hidden>
-    <path d={d} />
-  </svg>
-);
+function s(d: string) {
+  function Icone(p: P) {
+    return (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"
+           strokeLinecap="round" strokeLinejoin="round" className={p.className ?? base} aria-hidden>
+        <path d={d} />
+      </svg>
+    );
+  }
+  return Icone;
+}
 
 export const IconCalendar = s("M7 3v3M17 3v3M3.5 9h17M5 5.5h14a1.5 1.5 0 0 1 1.5 1.5v12A1.5 1.5 0 0 1 19 20.5H5A1.5 1.5 0 0 1 3.5 19V7A1.5 1.5 0 0 1 5 5.5Z");
 export const IconCheck = s("M4.5 6.5h15M4.5 12h15M4.5 17.5h15");

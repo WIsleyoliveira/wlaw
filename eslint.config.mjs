@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Cópia gerada pelo scripts/testar.mjs.
+    ".testes/**",
   ]),
 ]);
 

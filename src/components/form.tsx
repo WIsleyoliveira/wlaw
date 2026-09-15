@@ -65,13 +65,13 @@ export function Secao({
   children: React.ReactNode;
 }) {
   return (
-    <section className="grid gap-5 border-b border-ink-200 px-5 py-5 last:border-b-0 lg:grid-cols-[220px_1fr]">
+    <section className="grid gap-5 border-b border-ink-200 px-5 py-5 last:border-b-0 lg:grid-cols-[220px_1fr] *:min-w-0">
       <div>
         <h2 className="font-display text-[15px] font-semibold tracking-tight">{titulo}</h2>
         {descricao && <p className="mt-1 text-[12px] leading-snug text-ink-500">{descricao}</p>}
         <div className="gold-rule mt-2 h-px w-8" />
       </div>
-      <div className="grid gap-4 sm:grid-cols-2">{children}</div>
+      <div className="grid gap-4 sm:grid-cols-2 *:min-w-0">{children}</div>
     </section>
   );
 }

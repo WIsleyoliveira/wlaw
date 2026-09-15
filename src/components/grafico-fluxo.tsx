@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { fluxo } from "@/lib/mock";
 import { cx } from "@/components/ui";
 
 const SERIES = [
@@ -16,11 +15,14 @@ const M = { top: 16, right: 8, bottom: 28, left: 56 };
 const brl = (v: number) => v.toLocaleString("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
 const milhar = (v: number) => `${Math.round(v / 1000)}k`;
 
-export function GraficoFluxo() {
+export type PontoFluxo = { mes: string; receita: number; despesa: number };
+
+export function GraficoFluxo({ dados }: { dados: PontoFluxo[] }) {
   const [tabela, setTabela] = useState(false);
   const [ativo, setAtivo] = useState<number | null>(null);
+  const fluxo = dados;
 
-  const max = Math.max(...fluxo.flatMap((d) => [d.receita, d.despesa]));
+  const max = Math.max(1, ...fluxo.flatMap((d) => [d.receita, d.despesa]));
   const topo = Math.ceil(max / 10000) * 10000;
   const areaW = W - M.left - M.right;
   const areaH = H - M.top - M.bottom;
@@ -62,7 +64,7 @@ export function GraficoFluxo() {
             <tbody className="divide-y divide-ink-200">
               {fluxo.map((d) => (
                 <tr key={d.mes}>
-                  <td className="py-2">{d.mes}/2026</td>
+                  <td className="py-2">{d.mes}</td>
                   <td className="py-2 text-right tabular-nums">{brl(d.receita)}</td>
                   <td className="py-2 text-right tabular-nums">{brl(d.despesa)}</td>
                   <td className="py-2 text-right tabular-nums font-medium">{brl(d.receita - d.despesa)}</td>
@@ -136,7 +138,7 @@ export function GraficoFluxo() {
           >
             {ativo !== null && (
               <>
-                <p className="text-[11px] font-medium text-ink-500">{fluxo[ativo].mes}/2026</p>
+                <p className="text-[11px] font-medium text-ink-500">{fluxo[ativo].mes}</p>
                 {SERIES.map((s) => (
                   <p key={s.chave} className="flex items-center gap-1.5 text-[12px] text-ink-900">
                     <i className="h-2 w-2 rounded-[2px]" style={{ background: s.cor }} />

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { NAV } from "@/lib/nav";
+import type { NavGroup } from "@/lib/nav";
 import { cx } from "@/components/ui";
 import {
   IconCalendar, IconTasks, IconGavel, IconMail, IconRefresh, IconClock,
@@ -16,7 +16,8 @@ const ICONS: Record<string, (p: { className?: string }) => React.ReactElement> =
   chart: IconChart, gauge: IconGauge, report: IconReport, folder: IconFolder,
 };
 
-export function Sidebar() {
+/** Recebe só os itens que o perfil pode ver (filtrados no servidor). */
+export function Sidebar({ grupos, configuracoes }: { grupos: NavGroup[]; configuracoes: boolean }) {
   const pathname = usePathname();
 
   return (
@@ -34,7 +35,7 @@ export function Sidebar() {
       </Link>
 
       <div className="scroll-thin flex-1 overflow-y-auto overflow-x-hidden pb-4">
-        {NAV.map((group) => (
+        {grupos.map((group) => (
           <div key={group.section} className="mt-3">
             <p className="h-4 px-6 text-[10px] font-semibold uppercase tracking-[0.12em] text-ink-400 opacity-0 transition-opacity group-hover/nav:opacity-100">
               {group.section}
@@ -72,6 +73,7 @@ export function Sidebar() {
         ))}
       </div>
 
+      {configuracoes && (
       <div className="border-t border-ink-200 px-3 py-3">
         <Link
           href="/configuracoes"
@@ -83,6 +85,7 @@ export function Sidebar() {
           </span>
         </Link>
       </div>
+      )}
     </nav>
   );
 }
